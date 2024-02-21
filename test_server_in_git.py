@@ -3,7 +3,6 @@
 
 import csv
 import socket
-import time
 from threading import Thread
 
 
@@ -24,6 +23,35 @@ with open (r"C:\Users\LIFE2\Desktop\mego\.py\class 1\test2.py\test2.csv", 'r' ,n
 class Test_of_list_csv:
     def __init__(self,file_csv):
         self.file = file_csv
+
+    def chek_correct_id(self,file):
+        total_errors = 0
+        for row in file:
+            if row[2].isdigit():
+                pass
+            else:
+                total_errors += 1
+                # print("The value in botton id is not digit!")
+        return total_errors
+                
+    def chek_correct_name(self,file):
+        total_errors = 0
+        for row in file:
+            if row[0].isalpha() and row[1].isalpha():
+                pass
+            else:
+                total_errors += 1
+                # print("The value in botton names is not alpha!")
+        return total_errors
+    
+    def chek_correct_phone(self,file):
+        total_errors = 0
+        for row in file:
+            if row[3].startswith('0'):
+                pass
+            else:
+                total_errors += 1
+        return total_errors
     
     def chek_len_id(self,file):
         total_errors = 0
@@ -81,17 +109,17 @@ class Test_of_list_csv:
 
 
 test = Test_of_list_csv(list_clients)
-a = test.chek_len_id(list_clients)
-b = test.chek_len_phone(list_clients)
-c = test.chek_no_value(list_clients)
-d = test.chek_name_id(list_clients)
-e = test.total_dept(list_clients)
-# print(list_clients)
-list_clients = e
-print(f"Deitails to fix:\n {a} id's is not correct,\n {b} phon's is not correct,\n {c} value is missing,\n {d} id's is not the same names.")
+a = test.chek_correct_id(list_clients)
+b = test.chek_correct_name(list_clients)
+c = test.chek_correct_phone(list_clients)
+d = test.chek_len_id(list_clients)
+e = test.chek_len_phone(list_clients)
+f = test.chek_no_value(list_clients)
+g = test.chek_name_id(list_clients)
+h = test.total_dept(list_clients)
 
-
-
+list_clients = h
+print(f"Deitails to fix:\n {d} id's is not leng of 9 characters,\n {a} id's is not digit,\n {d} id's is not the same names,\n {e} phon's is not leng of 10 characters,\n {c} phon's is not starts with num '0',\n {b} names is not alpha,\n {f} value's is missing,\n")
 
 
 
@@ -100,9 +128,6 @@ class File:
         self.filename = filename
         # print(self.sort_name())
         
-
-
-
 
     def write_in_csv(self,data):
         with open(self.filename, "w", newline="") as csvfile:
