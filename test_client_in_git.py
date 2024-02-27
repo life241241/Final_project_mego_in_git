@@ -3,6 +3,9 @@ import socket
 from customer import Customer
 
 
+
+
+
 host = '127.0.0.1'
 port = 12346
 
@@ -10,56 +13,108 @@ port = 12346
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((host, port))
 
+
 def rec(client_socket):
-    print("waiting")
-    data = client_socket.recv(1024)
-    print(f"Received from server: {data.decode('utf-8')}")
+    while True:
+        print("waiting")
+        data = client_socket.recv(1024)
+        print(f"Received from server: {data.decode('utf-8')}")
 
 Thread(target=rec, args=(client_socket,)).start()
 
-def details():
-    list_of_details = ''
-    a_name = input("first_name:")
-    list_of_details + a_name
-    a_last_name = input("second_name:")
-    list_of_details.append(a_last_name)
-    a_id = input("id:")
-    list_of_details.append(a_id)
-    a_phone = input("phone:")
-    list_of_details.append(a_phone)
-    a_date = input("date:")
-    list_of_details.append(a_date)
-    a_dept = input("dept:")
-    list_of_details.append(a_dept)
-    return list_of_details
+
+class Test_client():
+    def __init__(self) -> None:
+        pass
+
+    def chek_alpha(data):
+        try:
+            data = data.isalpha()
+        except:
+            print("the details is uncorrect.")
+
+    "set first name=Moshe, second name=Berdichevsky, id=123456789, phone=0544123456, date=3/4/2022, dept=-300"
+    def cut_the_details(data):
+        set = 'set'
+        a = data[2][5:-1]
+        b = data[4][5:-1]
+        c = data[5][3:-1]
+        d = data[6][6:-1]
+        e = data[7][5:-1]
+        f = data[8][5:]
+        list_of_cusomer = set,a,b,c,d,e,f
+
+        print(a)
+        print(b)
+        print(c)
+        print(d)
+        print(e)
+        print(f)
+        return list_of_cusomer
+
+test = Test_client
 
 while True:
-    # Send data to the server
-    message = input("==> ")
+    message = input("==> ").lower()
+    message = message.split()
+    # message.lower()
+    print(message)
+    # message = [message.lower()]
+    # message = [message]
     # print(message)
-    # a = [["set", "first name=Moshe", "second name=Berdichevsky", "id=123456789", "phone=0544123456", "date=3/4/2022","dept=-300"]]
-
-
-
-
-    a = ["rivka","dush","207401308","0583239186","-34","08.02.24"]
+    # a = ["set", "first name=Moshe", "second name=Berdichevsky", "id=123456789", "phone=0544123456", "date=3/4/2022","dept=-300"]
+    # message = ["set", "first name=Moshe", "second name=Berdichevsky", "id=123456789", "phone=0544123456", "date=3/4/2022","dept=-300"]
+    # message = [message]
+    # print(message)
     
+    if message[0] == "set":
+        if message[1] == "first":
+            if message[2][:5] == "name=":
+                if message[3] == "second":
+                    if message[4][:5] == "name=":
+                        if message[5][:3] == "id=":
+                            if message[6][:6] == "phone=":
+                                if message[7][:5] == "date=":
+                                    if message[8][:5] == "dept=":
+                                        print("succsesful")
+                                        message = test.cut_the_details(message)
+                                    else:
+                                        print("you need to type 'dept='")
+                                        continue
+                                else:
+                                    print("you need to type 'date='")
+                                    continue
+                            else:
+                                print("you need to type 'phone='")
+                                continue        
+                        else:
+                            print("you need to type 'id='")
+                            continue
+                    else:
+                        print("you need to type 'name='")
+                        continue
+                else:
+                    print("you need to type 'second'")
+                    continue
+            else:
+                print("you need to type 'name='")
+                continue
+        else:
+            print("you need to type 'first'")
+            continue
+        # message.lower()
+    # break
+    # message =  [message]
 
-
-
-    # message = str(a)
-    # message = str(a)
-    # if message == "set":
-    #     a = details()
-    #     message = a
-    # if message[0] == "select":
-    #     message = message[1]
+    # a = ["rivka","dush","207401308","0583239186","-34","08.02.24"]
+    if "quit" in message or "bye" in message:
+        break
+    message =" ".join(message)
+    print(message)
     client_socket.send(message.encode('utf-8'))
     print("sended")
 
-    # Receive the echoed data from the server
-    if "done" in message or "bye" in message:
-        break
+
 
 # Close the connection with the server
 client_socket.close()
