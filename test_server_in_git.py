@@ -8,10 +8,11 @@ from threading import Thread
 
 file_to_chek = 'test2.csv'
 
-with open (r"C:\Users\LIFE2\Desktop\mego\.py\class 1\test2.py\test2.csv", 'r' ,newline="") as filecsv:
-# with open (r"C:\Users\LIFE2\Desktop\mego\.py\class 1\test2.py\db.csv", 'r' ,newline="") as filecsv:
+file_of_csv = r"C:\Users\LIFE2\Desktop\mego\.py\class 1\test2.py\test2.csv"
+# file_of_csv = r"C:\Users\LIFE2\Desktop\mego\.py\class 1\test2.py\db.csv"
 
-# with open (r"C:\Users\LIFE2\Desktop\mego\.py\class 1\test2.py\db.csv", 'r' ,newline="") as filecsv:
+
+with open (file_of_csv, 'r' ,newline="") as filecsv:
             list_clients = []
 
             reader = csv.reader(filecsv)
@@ -41,7 +42,6 @@ class Test_of_list_csv:
                 pass
             else:
                 total_errors += 1
-                # print("The value in botton names is not alpha!")
         return total_errors
     
     def chek_correct_phone(self,file):
@@ -57,7 +57,6 @@ class Test_of_list_csv:
         total_errors = 0
         for i in file:
             if len(i[2]) != 9:
-                # print(f"The id {i[2]} of {i[0]} {i[1]} is not correct!")
                 total_errors +=1
         return total_errors
             
@@ -65,7 +64,6 @@ class Test_of_list_csv:
         total_errors = 0
         for i in file:
             if len(i[3]) != 10:
-                # print(f"The number {i[3]} of {i[0]} {i[1]} is not correct!")
                 total_errors +=1
         return total_errors
 
@@ -76,7 +74,6 @@ class Test_of_list_csv:
             num += 1
             for i in range(len(row)):
                 if row[i] == '':
-                    # print(f"it's no value in line {num}")
                     total_errors +=1
         return total_errors
 
@@ -85,7 +82,6 @@ class Test_of_list_csv:
         for i in range(len(file)):
             for j in range(i+1,len(file)):
                 if file[i][2] == file[j][2]:
-                    # print("The id is not the same value on the names")
                     total_errors  += 1
                     # check_name(file[i][0],file[i][1],file[j][0],file[j][1])
                     break
@@ -129,16 +125,27 @@ class File:
         # print(self.sort_name())
         
 
-    def write_in_csv(self,data):
-        with open(self.filename, "w", newline="") as csvfile:
+    def add_a_new_customer(self,data):
+        # if data[0] == "set":
+        #     data = data[1:]
+        with open(self.filename, "a", newline="") as csvfile:
+            data[-1] += '\n'
+            data = ",".join(data)
+            csvfile.writelines(data)
 
-            writer = csv.writer(csvfile)
-            data = [data]
-            writer.writerow(data)
-    
+    def print_customers(self):
+        return list_clients
+
+
+            # file = File('test2.csv')
+            # file.write_in_csv(v)
+
+            # writer = csv.writer(csvfile)
+            # writer.writerow(data)
 
 
     def sort_dept1(self,value,list_client):
+
         list_dept = []
         value = "".join(value)
         if value[0] == '>':
@@ -162,6 +169,8 @@ class File:
                 if int(line[5]) != value:
                     list_dept.append(line)
         list_dept.sort(key=lambda x: int(x[5]),reverse=True)
+        # if list_dept == []:
+        #     list_dept.append("it's no value like your search!")
         return list_dept
 
     
@@ -173,6 +182,8 @@ class File:
             if row[0] == value:
                 list_client_name.append(row)
         list_client_name.sort(key=lambda x: int(x[5]),reverse=True)
+        if list_client_name == []:
+            list_client_name.append(["it's no value like your search!"])
         return list_client_name
     
 
@@ -181,6 +192,8 @@ class File:
         for row in list_client:
             if row[2] == value:
                 list_client_id.append(row)
+        if list_client_id == []:
+            list_client_id.append(["it's no value like your search!"])
         return list_client_id
     
 
@@ -190,15 +203,22 @@ class File:
         for row in list_client:
             if row[1] == value:
                 list_client_name.append(row)
+        if list_client_name == []:
+            list_client_name.append(["it's no value like your search!"])
         # list_client_name.sort(key=lambda x: int(x[5]),reverse=True)
         return list_client_name
+    
     def sort_phone(self,value,list_client):
         list_phone = []
         for row in list_client:
             if row[3] == value:
                 list_phone.append(row)
+        if list_phone == []:
+            list_phone.append(["Sorry, it's no value like your search!"])
         return list_phone
-        
+
+
+
 
 
 
@@ -206,25 +226,35 @@ def handle_connection(socket, server_socket, file):
     while True:
         # Receive data from the client and echo it back
         data = socket.recv(1024).decode()
+
+
         # data = input("enter a value: ")
         print(data)
         data2 = data.split()
         print(data2)
         # data2 = " ".join(data2)
         # data2 = 'test'
-        if data2[0] == "select":
-            if data2[1] == "dept":
-                return_data2 = file.sort_dept1(data2[2],list_clients)
-            elif data2[1] == "first" and data2[2] == "name":
-                return_data2 = file.sort_name1(data2[3],list_clients)
-            elif data2[1] == "last" and data2[2] == "name":
-                return_data2 = file.sort_last_name(data2[3],list_clients)
-            elif data2[1] == "id":
-                return_data2 = file.sort_id(data2[2],list_clients)
-            elif data2[1] == "phone":
-                return_data2 = file.sort_phone(data2[2],list_clients)
+        if data2[0] == "print":
+            return_data2 = file.print_customers()
+        elif data2[0] == "set":
+            data2 = data2[1:]
+            file.add_a_new_customer(data2)
+            return_data2 = [["Good,the costumer is add'd"]]
+        elif data2[0] == "select":
+            if data2[1][:4] == "dept":
+                return_data2 = file.sort_dept1(data2[1][4:],list_clients)
+            elif data2[1] == "first" and data2[2][:4] == "name":
+                return_data2 = file.sort_name1(data2[2][5:],list_clients)
+            elif data2[1] == "last" and data2[2][:4] == "name":
+                return_data2 = file.sort_last_name(data2[2][5:],list_clients)
+            elif data2[1][:2] == "id":
+                return_data2 = file.sort_id(data2[1][3:],list_clients)
+            elif data2[1][:5] == "phone":
+                return_data2 = file.sort_phone(data2[1][6:],list_clients)
+            else:
+                return_data2 = [["Sorry, you need to choose witch select...!"]]
         else:
-            return_data2 = ["Enter again your search!"]
+            return_data2 = [["Please enter again!"]]
         print(return_data2)
 
 
@@ -256,6 +286,7 @@ server_socket.listen(5)
 
 print(f"Server listening on {host}:{port}")
 file = File('test2.csv')
+
 while True:
     # Wait for a connection from a client
 
