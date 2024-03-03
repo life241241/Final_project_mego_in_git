@@ -11,13 +11,12 @@ if len(sys.argv) < 2:
 
 
 file_of_csv = sys.argv[1]
-# csv_file = sys.argv[1]
 if not os.path.exists(file_of_csv):
     with open(file_of_csv, "w"):
         pass
 
 
-file_to_chek = 'test2.csv'
+# file_to_chek = 'test2.csv'
 
 # file_of_csv = r"C:\Users\LIFE2\Desktop\mego\.py\class 1\test2.py\test2.csv"
 # file_of_csv = r"C:\Users\LIFE2\Desktop\mego\.py\class 1\test2.py\db.csv"
@@ -296,7 +295,7 @@ server_socket.bind((host, port))
 server_socket.listen(5)
 
 print(f"Server listening on {host}:{port}")
-file = File('test2.csv')
+file = File(file_of_csv)
 
 while True:
     # Wait for a connection from a client
