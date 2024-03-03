@@ -1,15 +1,11 @@
 from threading import Thread
 import socket
-from customer import Customer
-
-
 
 
 
 host = '127.0.0.1'
 port = 12346
 
-# Create a TCP socket object
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((host, port))
 
@@ -57,15 +53,8 @@ test = Test_client
 while True:
     message = input("==> ").lower()
     message = message.split()
-    # message.lower()
     print(message)
-    # message = [message.lower()]
-    # message = [message]
-    # print(message)
-    # a = ["set", "first name=Moshe", "second name=Berdichevsky", "id=123456789", "phone=0544123456", "date=3/4/2022","dept=-300"]
-    # message = ["set", "first name=Moshe", "second name=Berdichevsky", "id=123456789", "phone=0544123456", "date=3/4/2022","dept=-300"]
-    # message = [message]
-    # print(message)
+
     
     if message[0] == "set":
         if message[1] == "first":
@@ -102,11 +91,7 @@ while True:
         else:
             print("you need to type 'first'")
             continue
-        # message.lower()
-    # break
-    # message =  [message]
 
-    # a = ["rivka","dush","207401308","0583239186","-34","08.02.24"]
     if "quit" in message or "bye" in message:
         break
     message =" ".join(message)
@@ -116,5 +101,4 @@ while True:
 
 
 
-# Close the connection with the server
 client_socket.close()

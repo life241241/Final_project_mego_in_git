@@ -1,14 +1,25 @@
 
-
-
 import csv
 import socket
 from threading import Thread
+import sys
+import os
+
+if len(sys.argv) < 2:
+    print("Error: missing csv file name!")
+    quit()
+
+
+file_of_csv = sys.argv[1]
+# csv_file = sys.argv[1]
+if not os.path.exists(file_of_csv):
+    with open(file_of_csv, "w"):
+        pass
 
 
 file_to_chek = 'test2.csv'
 
-file_of_csv = r"C:\Users\LIFE2\Desktop\mego\.py\class 1\test2.py\test2.csv"
+# file_of_csv = r"C:\Users\LIFE2\Desktop\mego\.py\class 1\test2.py\test2.csv"
 # file_of_csv = r"C:\Users\LIFE2\Desktop\mego\.py\class 1\test2.py\db.csv"
 
 
